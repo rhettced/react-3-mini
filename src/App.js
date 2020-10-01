@@ -5,6 +5,7 @@ import './App.css'
 
 // Toast notification dependencies
 import { ToastContainer, toast } from 'react-toastify'
+import Axios from 'axios'
 
 class App extends Component {
   constructor(props) {
@@ -30,16 +31,32 @@ class App extends Component {
 
   getVehicles() {
     // axios (GET)
+    Axios.get("https://joes-autos.herokuapp.com/api/vehicles")
+    .then(res => {
+      this.setState({vehiclesToDisplay: res.data})
+    })
+    .catch(err => console.log(err));
     // setState with response -> vehiclesToDisplay
   }
 
   getPotentialBuyers() {
     // axios (GET)
+    Axios.get(`https://joes-autos.herokuapp.com/api/buyers`)
+    .then(res => {
+      //console.log(res.data);
+      this.setState( {buyersToDisplay: res.data} )
+    })
+    .catch(err => console.log(err))
     // setState with response -> buyersToDisplay
   }
 
   sellCar(id) {
     // axios (DELETE)
+    Axios.delete(`https://joes-autos.herokuapp.com/api/vehicles/${id}`)
+    .then(res => {
+      this.setState( {vehiclesToDisplay: res.data.vehicles} )
+    })
+    .catch(err => console.log(err))
     // setState with response -> vehiclesToDisplay
   }
 
@@ -53,12 +70,23 @@ class App extends Component {
   filterByColor() {
     let color = this.selectedColor.value
 
+    Axios.get(`https://joes-autos.herokuapp.com/api/vehicles?color=${color}`)
+    .then(res => {
+      this.setState( {vehiclesToDisplay: res.data} )
+    })
+    .catch(err => console.log(err))
     // axios (GET)
     // setState with response -> vehiclesToDisplay
   }
 
   updatePrice(priceChange, id) {
     // axios (PUT)
+    Axios.put(`https://joes-autos.herokuapp.com/api/vehicles/${id}/${priceChange}`)
+    .then(res => {
+      //console.log(res.data);
+      this.setState( {vehiclesToDisplay: res.data.vehicles} )
+    })
+    .catch(err => console.log(err));
     // setState with response -> vehiclesToDisplay
   }
 
@@ -72,6 +100,12 @@ class App extends Component {
     }
 
     // axios (POST)
+    Axios.post("https://joes-autos.herokuapp.com/api/vehicles", newCar )
+    .then(res => {
+      console.log(res.data.vehicles);
+      this.setState( {vehiclesToDisplay: res.data.vehicles} )
+    })
+    .catch(err => console.log(err))
     // setState with response -> vehiclesToDisplay
   }
 
@@ -83,11 +117,22 @@ class App extends Component {
     }
 
     //axios (POST)
+    Axios.post(`https://joes-autos.herokuapp.com/api/buyers`, newBuyer)
+    .then(res => {
+      //console.log(res.data);
+      this.setState( {buyersToDisplay: res.data.buyers} )
+    })
+    .catch(err => console.log(err))
     // setState with response -> buyersToDisplay
   }
 
   deleteBuyer(id) {
     // axios (DELETE)
+    Axios.delete(`https://joes-autos.herokuapp.com/api/buyers/${id}`)
+    .then(res => {
+      this.setState( {buyersToDisplay: res.data.buyers } )
+    })
+    .catch(err => console.log(err))
     //setState with response -> buyersToDisplay
   }
 
@@ -101,6 +146,12 @@ class App extends Component {
     let year = this.searchYear.value
 
     // axios (GET)
+    Axios.get(`https://joes-autos.herokuapp.com/api/vehicles/?year=${year}`)
+    .then(res => {
+      //console.log(res);
+      this.setState( {vehiclesToDisplay: res.data})
+    })
+    .catch(err => console.log(err))
     // setState with response -> vehiclesToDisplay
   }
 
